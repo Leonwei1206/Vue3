@@ -14,7 +14,7 @@ const loginerr = ref('');
 // 登入按鈕
 const loginHome = async () => {
 
-  const res = await fetch('http://localhost:3000/api/login', {
+  const res = await fetch('https://vue3-ta92.onrender.com/api/login', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'

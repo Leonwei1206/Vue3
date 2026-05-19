@@ -1,16 +1,21 @@
 <script setup lang="ts">
 import { useRouter } from 'vue-router'
 import { ref } from 'vue'
+import { useStore } from "../stores/pinia"
 
 const router = useRouter()
-
+// 前往註冊
 const goRegister = () => {
   router.push('/register')
 }
+// 帳號密碼
 const account = ref('');
 const password = ref('');
-
+// 登入錯誤
 const loginerr = ref('');
+// pinia
+const store = useStore();
+
 // 登入按鈕
 const loginHome = async () => {
 
@@ -28,6 +33,7 @@ const loginHome = async () => {
   const data = await res.json()
 
   if (data.success) {
+    store.user=data.user;
     // 
     localStorage.setItem('token', data.token)
     localStorage.setItem('user', data.user)

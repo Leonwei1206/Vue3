@@ -1,11 +1,41 @@
 <script setup lang="ts">
-// import { useRouter } from 'vue-router'
+import { useStore } from "../stores/pinia"
+import { io } from "socket.io-client"
+import { ref, onMounted, onBeforeUnmount } from 'vue'
 
-// const router = useRouter()
+const store = useStore();
+// 使用者名稱
+const nsername = store.user.username;
 
-// const goRegister = () => {
-//     router.push('/register')
-// }
+const avatarText = nsername.charAt(0);
+
+
+let socket: any = null;
+
+interface OnlineUser {
+    id: string
+    account: string
+    username: string
+}
+const onlineUsers = ref<OnlineUser[]>([])
+
+
+onMounted(() => {
+    socket = io("https://vue3-ta92.onrender.com");
+
+    socket.emit("userOnline", store.user);
+
+    socket.on("onlineUsers", (users: OnlineUser[]) => {
+        onlineUsers.value = users;
+    });
+});
+
+onBeforeUnmount(() => {
+    if (socket) {
+        socket.disconnect();
+    }
+});
+
 
 
 </script>
@@ -25,13 +55,13 @@
             </div>
 
             <div class="text-xl font-semibold">
-                歡迎回來，Leon
+                歡迎回來，{{ nsername }}
             </div>
 
             <div class="flex items-center gap-4">
                 <div class="flex items-center gap-2 px-4 py-2 rounded-full bg-white/15 whitespace-nowrap">
                     <span class="text-green-400">🟢</span>
-                    <span>線上 3 人</span>
+                    <span>線上 {{ onlineUsers.length }} 人</span>
                 </div>
 
                 <button class="text-xl">
@@ -40,9 +70,9 @@
 
                 <div class="flex items-center gap-2 px-3 py-2 rounded-full bg-white/15">
                     <div class="w-9 h-9 rounded-full bg-blue-500 flex items-center justify-center font-bold">
-                        L
+                        {{ avatarText }}
                     </div>
-                    <span>Leon</span>
+                    <span>{{ nsername }}</span>
                 </div>
 
                 <button
@@ -82,9 +112,12 @@
             <div class="col-span-3 bg-white/10 backdrop-blur-md rounded-2xl p-4">
                 <h2 class="text-xl font-bold mb-4">線上使用者</h2>
                 <div class="space-y-3">
-                    <div>🟢 Leon</div>
-                    <div>🟢 小明</div>
-                    <div>🟢 小美</div>
+                    <div v-for="user in onlineUsers" :key="user.id" class="flex items-center gap-2">
+                        <span class="text-green-400">🟢</span>
+
+                        <span>{{ user.username }}</span>
+
+                    </div>
                 </div>
             </div>
 

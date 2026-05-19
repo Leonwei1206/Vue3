@@ -81,6 +81,17 @@ io.on("connection", (socket) => {
     );
 
   });
+  socket.on("sendMessage", (msg) => {
+    const message = {
+      id: Date.now().toString(),
+      userId: msg.userId,
+      username: msg.username,
+      content: msg.content,
+      createdAt: new Date().toISOString()
+    };
+
+    io.emit("newMessage", message);
+  });
 
 
 

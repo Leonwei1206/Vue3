@@ -30,12 +30,11 @@ const loginHome = async () => {
   if (data.success) {
     // 
     localStorage.setItem('token', data.token)
+    localStorage.setItem('user', data.user)
     router.push('/home')
   } else {
     loginerr.value = "帳號或密碼錯誤";
   }
-
-
 }
 
 

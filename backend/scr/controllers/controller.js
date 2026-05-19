@@ -78,9 +78,9 @@
 
 const db = require("../models/model");
 const jwt = require("jsonwebtoken");
-
+// 註冊
 exports.register = async (req, res) => {
-  const { account, password,username } = req.body;
+  const { account, password, username } = req.body;
 
   const insertSql = `
     INSERT INTO login (account, password,username)
@@ -88,7 +88,7 @@ exports.register = async (req, res) => {
   `;
 
   try {
-    await db.query(insertSql, [account, password,username]);
+    await db.query(insertSql, [account, password, username]);
 
     res.json({
       message: "註冊成功",
@@ -98,7 +98,7 @@ exports.register = async (req, res) => {
     return res.status(500).json({ message: "註冊失敗" });
   }
 };
-
+// 登入
 exports.login = async (req, res) => {
   const { account, password } = req.body;
 
@@ -122,7 +122,13 @@ exports.login = async (req, res) => {
         { expiresIn: "1h" }
       );
 
-      res.json({ success: true, token });
+      res.json({
+        success: true, token, user: {
+          id: user.id,
+          account: user.account,
+          username: user.username
+        }
+      });
     } else {
       res.json({ success: false });
     }

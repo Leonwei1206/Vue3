@@ -80,15 +80,15 @@ const db = require("../models/model");
 const jwt = require("jsonwebtoken");
 
 exports.register = async (req, res) => {
-  const { account, password } = req.body;
+  const { account, password,username } = req.body;
 
   const insertSql = `
-    INSERT INTO login (account, password)
-    VALUES ($1, $2)
+    INSERT INTO login (account, password,username)
+    VALUES ($1, $2, $3)
   `;
 
   try {
-    await db.query(insertSql, [account, password]);
+    await db.query(insertSql, [account, password,username]);
 
     res.json({
       message: "註冊成功",

@@ -3,6 +3,7 @@ import { useRouter } from 'vue-router'
 import { ref } from 'vue'
 const router = useRouter()
 
+const username = ref('');
 const account = ref('');
 const password = ref('');
 const confirmPassword = ref('');
@@ -14,6 +15,7 @@ const goHome = () => {
 const errors = ref({
     account: '',
     password: '',
+    username: '',
     confirmPassword: ''
 })
 //判斷是否使用中文及注音
@@ -31,8 +33,9 @@ const validateField = (val: string, name: string) => {
 }
 // 註冊按鈕
 const handleRegister = async () => {
-    console.log("d");
+    console.log("d:"+username.value,);
     errors.value = {
+        username: validateField(username.value, '使用者名稱'),
         account: validateField(account.value, '帳號'),
         password: validateField(password.value, '密碼'),
         confirmPassword: validateField(confirmPassword.value, '確認密碼')
@@ -46,8 +49,10 @@ const handleRegister = async () => {
             'Content-Type': 'application/json'
         },
         body: JSON.stringify({
+            username:username.value,
             account: account.value,
             password: password.value
+            
         })
     })
 
@@ -69,7 +74,7 @@ const handleRegister = async () => {
 
 <template>
     <div class="min-h-screen bg-cover bg-center flex items-center justify-center"
-        style="background-image: url('/backGround.png')">
+        style="background-image: url('/Vue3/backGround.png')">
         <!-- 讓背景變暗 -->
         <div class="absolute inset-0 bg-black/20 pointer-events-none"></div>
 
@@ -95,7 +100,7 @@ const handleRegister = async () => {
                     <h2 class="text-2xl font-bold mb-6 text-center">
                         註冊帳號
                     </h2>
-
+                    使用者名稱 <input v-model="username" class="w-full border p-2 rounded mb-3" placeholder="使用者名稱" />
                     帳號 <input v-model="account" class="w-full border p-2 rounded mb-3" placeholder="帳號" />
                     密碼<input v-model="password" class="w-full border p-2 rounded mb-3" placeholder="密碼"
                         type="password" />
@@ -108,7 +113,7 @@ const handleRegister = async () => {
                         </button>
 
                     </div>
-
+                    <p class="text-red-500 text-sm mt-4">{{ errors.username }}</p>
                     <p class="text-red-500 text-sm mt-4">{{ errors.account }}</p>
                     <p class="text-red-500 text-sm">{{ errors.password }}</p>
                     <p class="text-red-500 text-sm">{{ errors.confirmPassword }}</p>

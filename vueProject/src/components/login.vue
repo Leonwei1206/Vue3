@@ -29,7 +29,7 @@ const loginHome = async () => {
 
   if (data.success) {
     // 
-    localStorage.setItem('token',data.token)
+    localStorage.setItem('token', data.token)
     router.push('/home')
   } else {
     loginerr.value = "帳號或密碼錯誤";
@@ -47,7 +47,7 @@ const loginHome = async () => {
 
 <template>
   <div class="min-h-screen bg-cover bg-center flex flex-col relative"
-    style="background-image: url('/loginBackground.png')">
+    style="background-image: url('/Vue3/loginBackground.png')">
     <!-- 讓背景變暗 -->
     <div class="absolute inset-0 bg-black/20 pointer-events-none"></div>
 
@@ -67,7 +67,7 @@ const loginHome = async () => {
           </h1>
 
           <p class="text-lg opacity-80 ml-8 max-w-md">
-            登入你的帳號，繼續你的聊天旅程，與朋友保持即時連線
+            登入你的帳號，繼續你的聊天旅程，與朋友保持即時連線！
           </p>
         </div>
 
@@ -93,15 +93,29 @@ const loginHome = async () => {
             <div class="flex justify-between items-center mt-4">
 
               <!-- 左邊：註冊 -->
-              <button @click="goRegister" class="bg-blue-500 text-white p-2 rounded">
+              <!-- <button @click="goRegister" class="bg-blue-500 text-white p-2 rounded">
                 註冊帳號
+              </button> -->
+              <button @click="goRegister"
+                class="relative inline-flex items-center justify-center p-0.5 overflow-hidden text-sm font-medium text-heading rounded-base group bg-gradient-to-br from-green-400 to-blue-600 group-hover:from-green-400 group-hover:to-blue-600 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-green-200 dark:focus:ring-green-800">
+                <span
+                  class=" relative px-4 py-2.5 transition-all ease-in duration-75 bg-neutral-primary-soft rounded-base group-hover:bg-transparent group-hover:dark:bg-transparent leading-5">
+                  註冊帳號
+                </span>
               </button>
 
+
               <!-- 右邊：登入 -->
-              <button @click="loginHome" class="bg-blue-500 text-white p-2 rounded">
+              <!-- <button @click="loginHome" class="bg-blue-500 text-white p-2 rounded">
                 登入
+              </button> -->
+              <button @click="loginHome"
+                class="relative inline-flex items-center justify-center p-0.5 overflow-hidden text-sm font-medium text-heading rounded-base group bg-gradient-to-br from-purple-600 to-blue-500 group-hover:from-purple-600 group-hover:to-blue-500 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800">
+                <span
+                  class=" relative px-4 py-2.5 transition-all ease-in duration-75 bg-neutral-primary-soft rounded-base group-hover:bg-transparent group-hover:dark:bg-transparent leading-5">
+                  登入
+                </span>
               </button>
-              
             </div>
             <p class="text-center text-red-500 text-sm mt-4">{{ loginerr }}</p>
           </div>

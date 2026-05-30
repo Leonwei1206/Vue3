@@ -1,38 +1,44 @@
-// const mysql = require("mysql2");
+const db = require("../config/db");
 
-// // 建立連線
-// const db = mysql.createConnection({
-//   host: "127.0.0.1",
-//   user: "root",
-//   password: "asas621201",
-//   database: "vue3"
-// });
 
-// db.connect((err) => {
-//   if (err) {
-//     console.error("資料庫連線失敗:", err);
-//   } else {
-//     console.log("資料庫連線成功");
-//   }
-// });
+// 新增使用者
+const createUser = async (account, password, username) => {
+  const sql = `
+    INSERT INTO login (account, password, username)
+    VALUES ($1, $2, $3)
+  `;
 
-// module.exports = db;
+  return await db.query(sql, [account, password, username]);
+};
 
-const { Pool } = require("pg");
-require("dotenv").config();
-console.log("DATABASE_URL =", process.env.DATABASE_URL);
-const db = new Pool({
-  connectionString: process.env.DATABASE_URL,
-  ssl: {
-    rejectUnauthorized: false,
-  },
-});
 
-db.connect()
-  .then(() => console.log("PostgreSQL 連線成功"))
-  .catch((err) => console.error("資料庫連線失敗:", err));
+// 取得登入帳密
+const getUsers = async () => {
+  const sql = "SELECT * FROM login";
+  const result = await db.query(sql);
 
-module.exports = db;
+  return result.rows;
+};
+
+// 登入
+const findUserByAccountAndPassword = async (account, password) => {
+  const sql = `
+    SELECT id, account, username
+    FROM login
+    WHERE account = $1 AND password = $2
+  `;
+
+  const result = await db.query(sql, [account, password]);
+
+  return result.rows[0];
+};
+
+module.exports = {
+  createUser,
+  getUsers,
+  findUserByAccountAndPassword,
+};
+
 
 
 

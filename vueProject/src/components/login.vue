@@ -15,10 +15,12 @@ const password = ref('');
 const loginerr = ref('');
 // pinia
 const store = useStore();
-
+// 加載圖片判斷
+const isLoading = ref(false);
 // 登入按鈕
 const loginHome = async () => {
-
+  isLoading.value = true;
+  loginerr.value = "";
   const res = await fetch('https://vue3-ta92.onrender.com/api/login', {
     method: 'POST',
     headers: {
@@ -33,7 +35,7 @@ const loginHome = async () => {
   const data = await res.json()
 
   if (data.success) {
-    store.user=data.user;
+    store.user = data.user;
     // 
     localStorage.setItem('token', data.token)
     localStorage.setItem('user', data.user)
@@ -41,6 +43,7 @@ const loginHome = async () => {
   } else {
     loginerr.value = "帳號或密碼錯誤";
   }
+  isLoading.value = false;
 }
 
 
@@ -51,14 +54,21 @@ const loginHome = async () => {
 
 
 <template>
-  <div class="min-h-screen bg-cover bg-center flex flex-col relative"
+  <div
+  class="
+    min-h-screen
+    w-screen
+    overflow-hidden
+    bg-cover bg-center bg-no-repeat
+    flex items-center justify-center
+  "
     style="background-image: url('/Vue3/loginBackground.png')">
     <!-- 讓背景變暗 -->
     <div class="absolute inset-0 bg-black/20 pointer-events-none"></div>
 
     <!-- 上 -->
     <div class="p-2 mt-2">
-      <h2 class="text-2xl font-bold text-center">登入</h2>
+      
     </div>
 
     <!--中 主要內容 -->
@@ -71,8 +81,9 @@ const loginHome = async () => {
             歡迎回來
           </h1>
 
-          <p class="text-lg opacity-80 ml-8 max-w-md">
-            登入你的帳號，繼續你的聊天旅程，與朋友保持即時連線！
+          <p class="text-lg opacity-80 ml-8 mr-8 max-w-md">
+            登入你的帳號，繼續你的聊天旅程<br>
+            與朋友保持即時連線！
           </p>
         </div>
 
@@ -122,7 +133,18 @@ const loginHome = async () => {
                 </span>
               </button>
             </div>
+            <!-- 登入錯誤訊息 -->
             <p class="text-center text-red-500 text-sm mt-4">{{ loginerr }}</p>
+            <!-- 加載中及 gif -->
+            <div v-if="isLoading" class="flex items-center justify-center gap-3">
+
+               <span>
+                {{ isLoading ? '登入中...' : '登入' }}
+              </span>
+              <img src="/loading.gif" class="w-10 h-10" />
+
+             
+            </div>
           </div>
 
 

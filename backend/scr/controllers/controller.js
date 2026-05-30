@@ -77,7 +77,7 @@
 
 
 const db = require("../config/db");
-const loginModel = require("../models/model");
+const userModel = require("../models/model");
 const jwt = require("jsonwebtoken");
 // 註冊
 exports.register = async (req, res) => {
@@ -85,7 +85,7 @@ exports.register = async (req, res) => {
 
   try {
 
-    await loginModel.createUser(account, password, username);
+    await userModel.createUser(account, password, username);
 
     res.json({
       message: "註冊成功",
